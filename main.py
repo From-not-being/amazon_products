@@ -2,6 +2,12 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 
+amazon_products_path = "/content/drive/MyDrive/Colab Notebooks/amazon_products.csv"
+df_amazon = pd.read_csv(amazon_products_path)
+
+display(df_amazon.head(3))
+print(df_amazon.columns)
+
 # Pfad zu deiner Amazon CSV
 path = "/content/drive/MyDrive/Colab Notebooks/amazon_products.csv"
 
@@ -83,29 +89,3 @@ def pure_tensorflow_amazon(file_path):
         print("Das Modell hat keinen signifikanten Zusammenhang gefunden.")
 
 pure_tensorflow_amazon(path)
-        tf.keras.layers.Dense(32, activation='relu'),
-        tf.keras.layers.Dense(16, activation='relu'),
-        tf.keras.layers.Dense(1, activation='linear') # Linear für Ratings
-    ])
-
-    # Explizite Konfiguration
-    mein_optimizer = tf.keras.optimizers.Adam(learning_rate=0.01)
-    meine_verlust_funktion = tf.keras.losses.MeanSquaredError()
-
-    model.compile(optimizer=mein_optimizer, loss=meine_verlust_funktion)
-
-    # Kurzes Training (ohne Training bleibt es bei Zufallswerten)
-    # Wir faken hier ein Ziel-Rating (z.B. 4.0), damit das Modell eine Richtung hat
-    y_dummy = np.full((len(X_scaled), 1), 4.0)
-    model.fit(X_scaled, y_dummy, epochs=10, verbose=0)
-
-    # Vorhersage
-    predictions = model.predict(X_scaled[:5], verbose=0)
-
-    print("\n📦 TENSORFLOW AMAZON RATING-VORHERSAGEN (Normalisiert):")
-    for i, pred in enumerate(predictions):
-        # Wir begrenzen das Rating logisch auf 1.0 bis 5.0 Sterne
-        final_rating = max(1.0, min(5.0, pred[0]))
-        print(f"Produkt {i+1}: Geschätztes Rating = {final_rating:.2f} Sterne")
-
-run_amazon_prediction(amazon_path)
